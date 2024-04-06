@@ -17,6 +17,7 @@ const messageSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const Message = mongoose.model('message', messageSchema);
+// Model adını "Message" olarak tanımla
+const Message = mongoose.model("Message", messageSchema);
 
 module.exports = Message;

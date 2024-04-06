@@ -33,7 +33,7 @@ const sendMessage = async (req, res) => {
         // await newMessage.save(); 2.
 
         //This will run in paralel
-        await Promise.all([conversation.save(),newMessage.save()]);
+        await Promise.all([conversation.save(), newMessage.save()]);
 
         res.status(201).json(newMessage);
 
@@ -43,20 +43,24 @@ const sendMessage = async (req, res) => {
     }
 }
 
-const getMessages = async (req,res)=>{
+const getMessages = async (req, res) => {
     try {
-        const {id:userToChatId}=req.params;
-        const senderId=req.user._id;
-        const conversation=await Conversation.findOne({
-            participants:{$all:[senderId,userToChatId]}
-        }).populate('messages');
+        const { id: userToChatId } = req.params;
+        const senderId = req.user._id;
 
-        res.status(200).json(conversation.messages);
+        const conversation = await Conversation.findOne({
+            participants: { $all: [senderId, userToChatId] }
+        }).populate("messages");
 
+        if(!conversation) return res.status(200).json([]);
+
+        const messages=conversation.messages;
+
+        res.status(200).json(messages);
     } catch (error) {
-        console.log('Error in getMessage controller: ',error.message);
-        res.status(500).json({error:'Internal Server Error'});
+        console.log('Error in getMessage controller: ', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
-module.exports = { sendMessage,getMessages }
+module.exports = { sendMessage, getMessages }
