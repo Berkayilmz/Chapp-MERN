@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import GenderCheckBox from './GenderCheckBox'
 import { Link } from 'react-router-dom';
+import useSignup from '../../hooks/useSignup';
+
 
 const Signup = () => {
 
@@ -12,13 +14,15 @@ const Signup = () => {
         gender: ''
     })
 
-    const handleSubmit=(e)=>{
+    const {loading,signup}=useSignup();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(inputs);
+        await signup(inputs);
     }
 
-    const handleCheckboxChange=(gender)=>{
-        setInputs({...inputs,gender})
+    const handleCheckboxChange = (gender) => {
+        setInputs({ ...inputs, gender })
     }
 
     return (
@@ -66,7 +70,7 @@ const Signup = () => {
                         <input
                             type="password" placeholder='Enter Again Password' className='w-full input input-bordered h-10'
                             value={inputs.confirmPassword}
-                            onChange={(e)=>setInputs({...inputs,confirmPassword:e.target.value})}
+                            onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
                         />
                     </div>
                     <GenderCheckBox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} />

@@ -2,7 +2,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser=require('cookie-parser');
-
+const cors = require('cors');
 const connectToMongoDB = require('./db/connectToMongoDB');
 
 const authRoutes = require('./routes/authRoutes');
@@ -12,7 +12,11 @@ const userRoutes=require('./routes/userRoutes')
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 
+
 const app = express();
+
+app.use(cors());
+
 const PORT = process.env.PORT;
 
 app.use(express.json());
